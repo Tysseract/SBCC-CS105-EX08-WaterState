@@ -1,6 +1,6 @@
 ## Exercise: WaterState (12 Points)
 
-The project name of this exercise is **WaterState### Problem Description
+The project name of this exercise is **WaterState** Problem Description
 
 The purpose of this assignment is for you to write all of your own comments and code. You will also get some practice using enumeration. 
 
