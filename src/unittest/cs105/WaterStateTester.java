@@ -1,6 +1,5 @@
 package unittest.cs105;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -112,7 +111,7 @@ public class WaterStateTester {
 			runTest(testInputsF[i]);
 			Main.main(null);
 			
-			test("Enter a temperature:\\s+Water state:\\s+" + testResultsC[i] + "\\s*");
+			test("Enter a temperature:\\s+Water state:\\s+" + testResultsF[i] + "\\s*");
 		}
 		
 		totalScore += 4;
