@@ -1,32 +1,18 @@
 package unittest.cs105;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.sbcc.cs105.Main;
+import edu.sbcc.cs105.WaterState;
 
 public class WaterStateTester {
 	private static final int maximumScore = 8;
 	private static final int maximumAssignmentScore = 12;
 	private static int totalScore;
 
-	private PrintStream oldOut;
-	private InputStream oldIn;
-	private ByteArrayOutputStream baos;
-	private ByteArrayInputStream bais;
-	
 	private static String[] testInputsC = { "-10C", "50C", "150C", "0C", "100C" };
 	private static String[] testResultsC = { "SOLID", "LIQUID", "GAS", "SOLID", "GAS" };
 
@@ -51,67 +37,22 @@ public class WaterStateTester {
 		System.out.println("criteria.");
 	}
 
-	private void runTest(String temp) {
-		this.bais = new ByteArrayInputStream((temp + "\n").getBytes());
-		System.setIn(this.bais);		
-	}
-	
-	private void test(String expected) {
-		Pattern tester = Pattern.compile(expected);
-		Matcher testMatcher = tester.matcher(this.baos.toString());
-		assertTrue("Check", testMatcher.matches());	
-	}
-	
-	@Before
-	public void setUp() {
-		this.baos = new ByteArrayOutputStream();
-		this.oldOut = System.out;
-		this.oldIn  = System.in;
-		System.setOut(new PrintStream(baos));
-	}
-
-	@After
-	public void tearDown() {
-		System.setOut(this.oldOut);
-		System.setIn(this.oldIn);
-		
-		this.baos.reset();
-	}
-
 	@Test
-	public void testC() {
-		runTest("-10C");
-		Main.main(null);
-		
-		test("Enter a temperature:\\s+Water state:\\s+SOLID\\s*");
+	public void testC() {		
+		assertEquals("Water state: SOLID",	WaterState.getWaterState("-10C"));
 
 		for (int i = 0; i < testInputsC.length; i++) {
-			tearDown();
-			setUp();
-			
-			runTest(testInputsC[i]);
-			Main.main(null);
-			
-			test("Enter a temperature:\\s+Water state:\\s+" + testResultsC[i] + "\\s*");
+			assertEquals("Water state: " + testResultsC[i], WaterState.getWaterState(testInputsC[i]));
 		}
 		totalScore += 4;
 	}
 
 	@Test
 	public void testF() {
-		runTest("-10F");
-		Main.main(null);
-		
-		test("Enter a temperature:\\s+Water state:\\s+SOLID\\s*");
+		assertEquals("Water state: SOLID", WaterState.getWaterState("-10F"));
 
-		for (int i = 0; i < testInputsF.length; i++) {
-			tearDown();
-			setUp();
-			
-			runTest(testInputsF[i]);
-			Main.main(null);
-			
-			test("Enter a temperature:\\s+Water state:\\s+" + testResultsF[i] + "\\s*");
+		for (int i = 0; i < testInputsF.length; i++) {			
+			assertEquals("Water state: " + testResultsF[i], WaterState.getWaterState(testInputsF[i]));
 		}
 		
 		totalScore += 4;
