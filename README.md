@@ -8,7 +8,7 @@ The detailed description of this problem comes from the Programming Exercise P3.
 
 You are to write a program that will take a temperature and units(Celcius or Farenheit). This temperature and units has the temperature as a double followed by either a 'C' or an 'F' for Celcius and Farenheit, respectively. Notice, that there is no space between the temperature and the units. Your program will then output one of three matter states, SOLID, LIQUID or GAS.
 
-Additionally, you should represent the state using an enumeration that contains the matter states SOLID, LIQUID and GAS. See special topic 5.4 (page 206, of the _Late Objects_ vesion) in the book.
+Additionally, you should represent the state using an enumeration that contains the matter states SOLID, LIQUID and GAS. See special topic 3.4 (page 105, of the _Late Objects_ vesion) in the book.
 
 Hints:
 
