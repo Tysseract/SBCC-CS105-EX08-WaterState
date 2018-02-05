@@ -31,7 +31,7 @@ Water state: SOLID
 
 ### Getting Started
 
-Like our last exercise, we are going to do this exercise by writing the source code that solves the problem first in **WaterState.java**. Using the techniques shown on the web page titled [http://209.129.49.15:7990/projects/CS105F2016/repos/allan.knight/browse/HowToStartEveryProject.md) create a source file called **WaterState.java**. This is where your code will go. 
+Like our last exercise, we are going to do this exercise by writing the source code that solves the problem first in **WaterState.java**. Using the techniques shown on the web page titled [How to Start Every Project in this Class](http://209.129.49.15:7990/projects/CS105/repos/allan.knight/browse/HowToStartEveryProject.md) create a source file called **WaterState.java**. This is where your code will go. 
 
 Starting this week we don't have any code to copy for the assignment. You get to do it all! Don't forget to provide proper JavaDoc documentation.
 
