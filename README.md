@@ -20,7 +20,7 @@ Hints:
 
 - You can print enumerations directly. For example, `System.out.println(MatterState.SOLID)` prints out `SOLID`.
 
-This problem should be solved by writing code in `public static void main` to get input from the user and `public static String getWaterState(String temperature)` to return the state of the matter at the given temperator. 
+This problem should be solved by writing code in `public static void main` to get input from the user and `public static String getWaterState(String temperature)` to return the state of the matter at the given temperature. 
 
 Using the test input, your output should look like:
 
