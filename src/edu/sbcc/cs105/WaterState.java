@@ -3,6 +3,9 @@
  * CRN: 62499
  * Assignment: Integer Pairs
  * 
+ * The equations used for determining solid water state are derived from The International Association for the Properties of Water and Steam
+ * Source: http://www.iapws.org/relguide/MeltSub2011.pdf
+ * 
  * Statement of code ownership: I hereby state that I have written all of this
  * code and I have not copied this code from any other person or source.
  * 
@@ -17,7 +20,7 @@ public class WaterState {
 	
 	public static String getWaterState(String temperature, String pressure) {
 		
-			MatterState WaterState;
+			MatterState WaterState = MatterState.SOLID;
 		
 			//transform temperature to Celcius
 			char temperatureUnit = temperature.charAt(temperature.length() - 1);
@@ -32,6 +35,9 @@ public class WaterState {
 				temperatureValueC = Double.parseDouble(temperature);
 			}
 			
+			//and then to Kelvins
+			double temperatureValueK = temperatureValueC + 273.15;
+			
 			//transform pressure to Torr
 			char pressureUnit = pressure.charAt(pressure.length() - 1);
 			
@@ -43,23 +49,52 @@ public class WaterState {
 				System.out.println(" ! Invalid or Unknown Pressure unit. Assuming Torr ! ");
 				pressureValueTorr = Double.parseDouble(pressure);
 			}
+			//and now to Pa
+			double pressureValuePa = pressureValueTorr * 133.3223684;
 		
 			//figure out the boiling point
+			double vaporPressureTorr = Math.pow(10, (8.07131-(1730.63/(233.426 + temperatureValueC))));
 			double boilingPoint = 100.0;
 			
 			boilingPoint = (1730.63/(8.07131-Math.log10(pressureValueTorr))) - 233.426;
+			//System.out.println(vaporPressureTorr);
 			
-			System.out.println(boilingPoint);
 			
 			//figure out the freezing point
+			double freezingPressureTorr = (1 - (0.626000*Math.pow(10, 6))*(1 - Math.pow(((temperatureValueC-273.16)/273.16),(-3))) + 0.197135*Math.pow(10,6)*(1 - Math.pow(((temperatureValueC - 273.16)/273.16),21.2))) * 0.000611657;
 			double freezingPoint = 0.0;
 			
+			System.out.println(freezingPressureTorr);
 			
 			
+			double meltingPressurePa;
 			//do the calculations
-			if(temperatureValueC <= freezingPoint) WaterState = MatterState.SOLID;
-			else if(temperatureValueC >= boilingPoint) WaterState = MatterState.GAS;
-			else WaterState = MatterState.LIQUID;
+			if(temperatureValueC >= boilingPoint) WaterState = MatterState.GAS; //below the vapour curve
+			else if(pressureValuePa <= 208566000) { //everything below ice Ih - ice III - liquid triple point
+				//3.1 Melting pressure of ice Ih (temperature range from 273.16 K to 251.165 K)
+				if(temperatureValueK >= 273.16) WaterState = MatterState.LIQUID;
+				else if(temperatureValueK <= 251.165) WaterState = MatterState.SOLID;
+				else { //where the pressure-temperature curve exists between 273.16 K and 251.165 K
+					double reducedTemperature = temperatureValueK / 273.16;
+					double reducedPressure = 1 + ((1195393.37 * (1 - Math.pow(reducedTemperature, 3.0))) + (80818.3159 * (1 - Math.pow(reducedTemperature, 25.75))) + (3338.26860 * (1 - Math.pow(reducedTemperature,  103.750))));
+					meltingPressurePa = reducedPressure * 611.657;
+					if(pressureValuePa <= meltingPressurePa) WaterState = MatterState.SOLID;
+					else WaterState = MatterState.LIQUID;
+				}
+			}
+			else if(pressureValuePa <= 350100000) { //everything else below ice III - ice V - liquid triple point
+				//3.2 Melting pressure of ice III (temperature range from 251.165 K to 256.164 K)
+				if(temperatureValueK >= 256.164) WaterState = MatterState.LIQUID;
+				else if(temperatureValueK <= 251.165) WaterState = MatterState.SOLID;
+				else { //where the pressure-temperature curve exists between  251.165 K and 256.164 K
+					double reducedTemperature = temperatureValueK / 251.165;
+					double reducedPressure = 1 - 0.299948 * (1 - Math.pow(reducedTemperature, 60.0));
+					meltingPressurePa = reducedPressure * 208.566;
+					if(pressureValuePa <= meltingPressurePa) WaterState = MatterState.SOLID;
+					else WaterState = MatterState.LIQUID;
+				}
+			}
+			else WaterState = MatterState.SOLID;
 			
 			
 			String returnString = "Water state: " + WaterState;
