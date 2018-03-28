@@ -16,11 +16,11 @@ package edu.sbcc.cs105;
 import java.util.Scanner;
 
 public class WaterState {
-	public enum MatterState { SOLID, LIQUID, GAS }
+	public enum MatterState { SOLID, LIQUID, GAS, ERROR }
 	
 	public static String getWaterState(String temperature, String pressure) {
 		
-			MatterState WaterState = MatterState.SOLID;
+			MatterState WaterState = MatterState.ERROR;
 		
 			//transform temperature to Celcius
 			char temperatureUnit = temperature.charAt(temperature.length() - 1);
@@ -53,23 +53,21 @@ public class WaterState {
 			double pressureValuePa = pressureValueTorr * 133.3223684;
 		
 			//figure out the boiling point
-			double vaporPressureTorr = Math.pow(10, (8.07131-(1730.63/(233.426 + temperatureValueC))));
-			double boilingPoint = 100.0;
+			//double vaporPressureTorr = Math.pow(10, (8.07131-(1730.63/(233.426 + temperatureValueC))));
+			double boilingPointC = 100.0;
 			
-			boilingPoint = (1730.63/(8.07131-Math.log10(pressureValueTorr))) - 233.426;
+			boilingPointC = (1730.63/(8.07131-Math.log10(pressureValueTorr))) - 233.426;
 			//System.out.println(vaporPressureTorr);
 			
 			
 			//figure out the freezing point
-			double freezingPressureTorr = (1 - (0.626000*Math.pow(10, 6))*(1 - Math.pow(((temperatureValueC-273.16)/273.16),(-3))) + 0.197135*Math.pow(10,6)*(1 - Math.pow(((temperatureValueC - 273.16)/273.16),21.2))) * 0.000611657;
-			double freezingPoint = 0.0;
-			
-			System.out.println(freezingPressureTorr);
+			//double freezingPressureTorr = (1 - (0.626000*Math.pow(10, 6))*(1 - Math.pow(((temperatureValueC-273.16)/273.16),(-3))) + 0.197135*Math.pow(10,6)*(1 - Math.pow(((temperatureValueC - 273.16)/273.16),21.2))) * 0.000611657;
+			//double freezingPoint = 0.0;
 			
 			
 			double meltingPressurePa;
 			//do the calculations
-			if(temperatureValueC >= boilingPoint) WaterState = MatterState.GAS; //below the vapour curve
+			if(temperatureValueC >= boilingPointC) WaterState = MatterState.GAS; //below the vapour curve
 			else if(pressureValuePa <= 208566000) { //everything below ice Ih - ice III - liquid triple point
 				//3.1 Melting pressure of ice Ih (temperature range from 273.16 K to 251.165 K)
 				if(temperatureValueK >= 273.16) WaterState = MatterState.LIQUID;
@@ -94,7 +92,19 @@ public class WaterState {
 					else WaterState = MatterState.LIQUID;
 				}
 			}
-			else WaterState = MatterState.SOLID;
+			else if(pressureValuePa <= 632400000) { //everything else below ice V - ice VI - liquid triple point
+				//3.3 Melting pressure of ice V (temperature range from 256.164 K to 273.31 K)
+				if(temperatureValueK >= 273.31) WaterState = MatterState.LIQUID;
+				else if(temperatureValueK <= 256.164) WaterState = MatterState.SOLID;
+				else { //where the pressure-temperature curve exists between  256.164 K and 273.31 K
+					double reducedTemperature = temperatureValueK / 256.164;
+					double reducedPressure = 1 - 1.18721 * (1 - Math.pow(reducedTemperature, 8.0));
+					meltingPressurePa = reducedPressure * 350.1;
+					if(pressureValuePa <= meltingPressurePa) WaterState = MatterState.SOLID;
+					else WaterState = MatterState.LIQUID;
+				}
+			}
+			else WaterState = MatterState.ERROR;
 			
 			
 			String returnString = "Water state: " + WaterState;
