@@ -83,7 +83,7 @@ public class WaterState {
 			//double freezingPoint = 0.0;
 			
 			
-			double meltingPressurePa;
+			double meltingPressurePa = 0.0;
 			//do the calculations
 			if(temperatureValueC >= boilingPointC) WaterState = MatterState.GAS; //below the vapour curve
 			else if(pressureValuePa <= 208566000.0) { //everything below ice Ih - ice III - liquid triple point
@@ -93,7 +93,7 @@ public class WaterState {
 				else { //where the pressure-temperature curve exists between 273.16 K and 251.165 K
 					double reducedTemperature = temperatureValueK / 273.16;
 					double reducedPressure = 1 + ((1195393.37 * (1 - Math.pow(reducedTemperature, 3.0))) + (80818.3159 * (1 - Math.pow(reducedTemperature, 25.75))) + (3338.26860 * (1 - Math.pow(reducedTemperature,  103.750))));
-					meltingPressurePa = reducedPressure * 611.657;
+					meltingPressurePa = reducedPressure * 611657000.0;
 					if(pressureValuePa <= meltingPressurePa) WaterState = MatterState.SOLID;
 					else WaterState = MatterState.LIQUID;
 				}
@@ -105,7 +105,7 @@ public class WaterState {
 				else { //where the pressure-temperature curve exists between  251.165 K and 256.164 K
 					double reducedTemperature = temperatureValueK / 251.165;
 					double reducedPressure = 1 - 0.299948 * (1 - Math.pow(reducedTemperature, 60.0));
-					meltingPressurePa = reducedPressure * 208.566;
+					meltingPressurePa = reducedPressure * 208566000.0;
 					if(pressureValuePa >= meltingPressurePa) WaterState = MatterState.SOLID;
 					else WaterState = MatterState.LIQUID;
 				}
@@ -117,7 +117,7 @@ public class WaterState {
 				else { //where the pressure-temperature curve exists between  256.164 K and 273.31 K
 					double reducedTemperature = temperatureValueK / 256.164;
 					double reducedPressure = 1 - 1.18721 * (1 - Math.pow(reducedTemperature, 8.0));
-					meltingPressurePa = reducedPressure * 350.1;
+					meltingPressurePa = reducedPressure * 350100000.0;
 					if(pressureValuePa >= meltingPressurePa) WaterState = MatterState.SOLID;
 					else WaterState = MatterState.LIQUID;
 				}
@@ -129,7 +129,7 @@ public class WaterState {
 				else { //where the pressure-temperature curve exists between  273.31 K and 355 K
 					double reducedTemperature = temperatureValueK / 273.31;
 					double reducedPressure = 1 - 1.07476 * (1 - Math.pow(reducedTemperature, 4.6));
-					meltingPressurePa = reducedPressure * 632.4;
+					meltingPressurePa = reducedPressure * 632400000.0;
 					if(pressureValuePa >= meltingPressurePa) WaterState = MatterState.SOLID;
 					else WaterState = MatterState.LIQUID;
 				}
@@ -142,7 +142,7 @@ public class WaterState {
 				else { //where the pressure-temperature curve exists between 355 K and 715 K
 					double reducedTemperature = temperatureValueK / 273.31;
 					double reducedPressure = 1 - 1.07476 * (1 - Math.pow(reducedTemperature, 4.6));
-					meltingPressurePa = reducedPressure * 632.4;
+					meltingPressurePa = reducedPressure * 2216000000.0;
 					if(pressureValuePa >= meltingPressurePa) WaterState = MatterState.SOLID;
 					else WaterState = MatterState.LIQUID;
 				}
@@ -151,6 +151,9 @@ public class WaterState {
 				System.out.println("!Error: temperature must be below 10000K and the pressure must be below 100GPa... ");
 			}
 			
+			
+			System.out.println("meltingPressurePa: " + meltingPressurePa);
+			System.out.println("pressureValuePa: " + pressureValuePa);
 			
 			String returnString = "Water state: " + WaterState;
 			return returnString;
