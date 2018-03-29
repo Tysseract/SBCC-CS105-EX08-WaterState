@@ -5,15 +5,15 @@
  * 
  * @description This program takes the temperature and pressure values for a hypothetical sample of H2O (water) and outputs the theoretical physical state it should be in with a 3% margin of error
  * 
- * The equations used for determining solid water state are derived from The International Association for the Properties of Water and Steam
+ * The equations used for determining solid water states are derived from The International Association for the Properties of Water and Steam
  * Source: http://www.iapws.org/relguide/MeltSub2011.pdf
- * The equations used for determining Gas water state are derived from the Antoine equation which is, in turn, derived from the Clausius–Clapeyron relation
+ * The equations used for determining Gas water states are derived from the Antoine equation which is, in turn, derived from the Clausius–Clapeyron relation
  * Source: https://en.wikipedia.org/wiki/Vapor_pressure#Boiling_point_of_water
  * 
  * Statement of code ownership: I hereby state that I have written all of this
  * code and I have not copied this code from any other person or source.
  * 
- * @version a.1.0.1.1
+ * @version a.1.0.2
  * 
  * @author Mattys C vanZeyl
  * @website https://www.tysseract.net
@@ -174,10 +174,17 @@ public class WaterState {
 	}
 	
 	public static void main(String[] args) {
-		Scanner in = new Scanner(System.in);
 		
+		//introduce the program
+		System.out.println("WaterState.java: takes the temperature and pressure values for a hypothetical sample of H2O (water) and outputs the theoretical physical state it should be in");
+		System.out.println("Solid water states are derived from IAPWS equations and gas water states are derived from the Antoine equation");
+		System.out.println("Program written by Mattys C vanZeyl, https://www.tysseract.net");
+		
+		//initialize scanner
+		Scanner in = new Scanner(System.in);
+		//don't repeat unless told otherwise
 		boolean yn = false;
-		do {
+		do {//at least once
 			
 			System.out.println("Enter a temperature as any number followed by one letter unit in F, C, or K (ie: 123.4C): ");
 			String temperature = in.nextLine();
