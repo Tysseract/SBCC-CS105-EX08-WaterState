@@ -166,13 +166,21 @@ public class WaterState {
 	}
 	
 	public static void main(String[] args) {
-		Scanner in = new Scanner(System.in);
-        System.out.println("Enter a temperature as any number followed by one letter unit in F, C, or K (ie: 123.4C): ");
-        String temperature = in.nextLine();
-        System.out.println("Enter the current atmospheric pressure as any number directly followed the unit in Torr, Atm, Pa, or Mpa (ie: 120000Pa); leave blank to assume 1atm: ");
-        String pressure = in.nextLine();
-        in.close();
-        System.out.print(getWaterState(temperature, pressure));
+		boolean yn = false;
+		do {
+			Scanner in = new Scanner(System.in);
+			System.out.println("Enter a temperature as any number followed by one letter unit in F, C, or K (ie: 123.4C): ");
+			String temperature = in.nextLine();
+			System.out.println("Enter the current atmospheric pressure as any number directly followed the unit in Torr, Atm, Pa, or Mpa (ie: 120000Pa); leave blank to assume 1atm: ");
+			String pressure = in.nextLine();
+			System.out.println(getWaterState(temperature, pressure));
+			System.out.println("Continue? (y/n): ");
+			String continueValue = in.nextLine();
+			if(continueValue.equals(""));
+			else if(continueValue.contains("n")) yn = false;
+			else if(continueValue.contains("y")) yn = true;
+			in.close();
+		}while(yn);
 	}
 	
 }
