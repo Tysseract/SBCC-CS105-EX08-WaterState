@@ -132,7 +132,6 @@ public class WaterState {
 				}
 			}
 			else {
-				WaterState = MatterState.ERROR;
 				System.out.println("!Error: temperature must be below 10000K and the pressure must be below 100TPa");
 			}
 			
@@ -150,9 +149,9 @@ public class WaterState {
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
         System.out.print("Enter a temperature as any number followed by one letter unit in F, C, or K (ie: 123.4C): ");
-        String temperature = in.next();
+        String temperature = in.nextLine();
         System.out.print("Enter the current atmospheric pressure as any number directly followed the unit in Torr, Atm, or Pa (ie: 120000Pa); leave blank to assume 1atm: ");
-        String pressure = in.next();
+        String pressure = in.nextLine();
         in.close();
         System.out.print(getWaterState(temperature, pressure));
 	}
