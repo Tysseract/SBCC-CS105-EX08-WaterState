@@ -5,6 +5,8 @@
  * 
  * The equations used for determining solid water state are derived from The International Association for the Properties of Water and Steam
  * Source: http://www.iapws.org/relguide/MeltSub2011.pdf
+ * The equations used for determining Gas water state are derived from the Antoine equation which is, in turn, derived from the Clausius–Clapeyron relation
+ * Source: https://en.wikipedia.org/wiki/Vapor_pressure#Boiling_point_of_water
  * 
  * Statement of code ownership: I hereby state that I have written all of this
  * code and I have not copied this code from any other person or source.
