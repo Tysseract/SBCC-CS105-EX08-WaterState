@@ -13,6 +13,8 @@
  * Statement of code ownership: I hereby state that I have written all of this
  * code and I have not copied this code from any other person or source.
  * 
+ * @version a.1.0.0
+ * 
  * @author Mattys C vanZeyl
  */
 package edu.sbcc.cs105;
