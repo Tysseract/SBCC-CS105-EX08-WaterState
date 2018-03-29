@@ -20,7 +20,10 @@ public class WaterState {
 	
 	public static String getWaterState(String temperature, String pressure) {
 			
-			if(pressure.equals("")) pressure = "1atm";
+			if(pressure.equals("")) {
+				pressure = "1atm";
+				System.out.println("!Info: assuming 1 atm");
+			}
 			
 			MatterState WaterState = MatterState.ERROR;
 		
@@ -36,7 +39,7 @@ public class WaterState {
 			else if(temperatureUnit == 'K') temperatureValueC = (rawTemperatureValue - 273.15);
 			else if(temperatureUnit == 'C') temperatureValueC = rawTemperatureValue;
 			else {
-				System.out.println(" ! Invalid or Unknown Temperature unit. Assuming Celcius ! ");
+				System.out.println("!Warning: Invalid or Unknown Temperature unit. Assuming Celcius... ");
 				temperatureValueC = Double.parseDouble(temperature);
 			}
 			
@@ -57,7 +60,7 @@ public class WaterState {
 			else if(pressureUnit == 'm') pressureValueTorr = Double.parseDouble(pressure.substring(0, pressure.length() - 3)) * 760;//atm
 			else if(pressureUnit == 'r') pressureValueTorr = Double.parseDouble(pressure.substring(0, pressure.length() - 4));//Torr
 			else {
-				System.out.println("!Warning: Invalid or Unknown Pressure unit. Assuming Pa ");
+				System.out.println("!Warning: Invalid or Unknown Pressure unit. Assuming Torr... ");
 				pressureValueTorr = Double.parseDouble(pressure);
 			}
 			//and now to Pa
@@ -128,7 +131,7 @@ public class WaterState {
 				}
 			}
 			else if(temperatureValueK <= 10000.0 && pressureValuePa <= 100000000000.0) { //everything else (accurate below 715K)
-				if(temperatureValueK > 715.0) System.out.println("!Warning: above 715 Kelvins, accuracy is not tested to within 3% ");
+				if(temperatureValueK > 715.0) System.out.println("!Warning: above 715 Kelvins, accuracy is not tested to within 3%... ");
 				//3.4 Melting pressure of ice VI (temperature range from 355 K to 715 K)
 				if(temperatureValueK >= 355) WaterState = MatterState.LIQUID;
 				else if(temperatureValueK <= 273.31) WaterState = MatterState.SOLID;
@@ -141,7 +144,7 @@ public class WaterState {
 				}
 			}
 			else {
-				System.out.println("!Error: temperature must be below 10000K and the pressure must be below 100GPa");
+				System.out.println("!Error: temperature must be below 10000K and the pressure must be below 100GPa... ");
 			}
 			
 			
@@ -152,14 +155,14 @@ public class WaterState {
 	}
 	
 	public static String getWaterState(String temperature) {
-		return getWaterState(temperature, "1atm");
+		return getWaterState(temperature, "");
 	}
 	
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
-        System.out.print("Enter a temperature as any number followed by one letter unit in F, C, or K (ie: 123.4C): ");
+        System.out.println("Enter a temperature as any number followed by one letter unit in F, C, or K (ie: 123.4C): ");
         String temperature = in.nextLine();
-        System.out.print("Enter the current atmospheric pressure as any number directly followed the unit in Torr, Atm, Pa, or Mpa (ie: 120000Pa); leave blank to assume 1atm: ");
+        System.out.println("Enter the current atmospheric pressure as any number directly followed the unit in Torr, Atm, Pa, or Mpa (ie: 120000Pa); leave blank to assume 1atm: ");
         String pressure = in.nextLine();
         in.close();
         System.out.print(getWaterState(temperature, pressure));
