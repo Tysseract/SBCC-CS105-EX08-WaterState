@@ -27,7 +27,10 @@ public class WaterState {
 			//transform temperature to Celcius
 			char temperatureUnit = temperature.charAt(temperature.length() - 1);
 		
-			double rawTemperatureValue = Double.parseDouble(temperature.substring(0, temperature.length() - 1));
+			double rawTemperatureValue;
+			if(temperature.length() <= 1) rawTemperatureValue = Double.parseDouble(temperature);
+			else rawTemperatureValue = Double.parseDouble(temperature.substring(0, temperature.length() - 1));
+			
 			double temperatureValueC = 0.0;
 			if(temperatureUnit == 'F') temperatureValueC = (rawTemperatureValue - 32.0) * (5.0/9.0);
 			else if(temperatureUnit == 'K') temperatureValueC = (rawTemperatureValue - 273.15);
@@ -44,11 +47,17 @@ public class WaterState {
 			char pressureUnit = pressure.charAt(pressure.length() - 1);
 			
 			double pressureValueTorr = 0.0;
-			if(pressureUnit == 'a') pressureValueTorr = Double.parseDouble(pressure.substring(0, pressure.length() - 2)) / 133.322368421;
-			else if(pressureUnit == 'm') pressureValueTorr = Double.parseDouble(pressure.substring(0, pressure.length() - 3)) * 760;
-			else if(pressureUnit == 'r') pressureValueTorr = Double.parseDouble(pressure.substring(0, pressure.length() - 4));
+			if(pressureUnit == 'a') {//Pa
+				if((pressure.charAt(pressure.length() - 3) == 'T') || (pressure.charAt(pressure.length() - 3) == 't')) pressureValueTorr = Double.parseDouble(pressure.substring(0, pressure.length() - 3)) * (1000000000000.0 / 133.322368421);
+				else if((pressure.charAt(pressure.length() - 3) == 'G') || (pressure.charAt(pressure.length() - 3) == 'g')) pressureValueTorr = Double.parseDouble(pressure.substring(0, pressure.length() - 3)) * (1000000000.0 / 133.322368421);
+				else if((pressure.charAt(pressure.length() - 3) == 'M') || (pressure.charAt(pressure.length() - 3) == 'm')) pressureValueTorr = Double.parseDouble(pressure.substring(0, pressure.length() - 3)) * (1000000.0 / 133.322368421);
+				else if((pressure.charAt(pressure.length() - 3) == 'K') || (pressure.charAt(pressure.length() - 3) == 'k')) pressureValueTorr = Double.parseDouble(pressure.substring(0, pressure.length() - 3)) * (1000.0 / 133.322368421);
+				else pressureValueTorr = Double.parseDouble(pressure.substring(0, pressure.length() - 2)) / 133.322368421;
+			}
+			else if(pressureUnit == 'm') pressureValueTorr = Double.parseDouble(pressure.substring(0, pressure.length() - 3)) * 760;//atm
+			else if(pressureUnit == 'r') pressureValueTorr = Double.parseDouble(pressure.substring(0, pressure.length() - 4));//Torr
 			else {
-				System.out.println("!Warning: Invalid or Unknown Pressure unit. Assuming Torr ");
+				System.out.println("!Warning: Invalid or Unknown Pressure unit. Assuming Pa ");
 				pressureValueTorr = Double.parseDouble(pressure);
 			}
 			//and now to Pa
@@ -118,7 +127,7 @@ public class WaterState {
 					else WaterState = MatterState.LIQUID;
 				}
 			}
-			else if(temperatureValueK <= 10000.0 && pressureValuePa <= 100000000000000.0) { //everything else (accurate below 715K)
+			else if(temperatureValueK <= 10000.0 && pressureValuePa <= 100000000000.0) { //everything else (accurate below 715K)
 				if(temperatureValueK > 715.0) System.out.println("!Warning: above 715 Kelvins, accuracy is not tested to within 3% ");
 				//3.4 Melting pressure of ice VI (temperature range from 355 K to 715 K)
 				if(temperatureValueK >= 355) WaterState = MatterState.LIQUID;
@@ -132,7 +141,7 @@ public class WaterState {
 				}
 			}
 			else {
-				System.out.println("!Error: temperature must be below 10000K and the pressure must be below 100TPa");
+				System.out.println("!Error: temperature must be below 10000K and the pressure must be below 100GPa");
 			}
 			
 			
@@ -150,7 +159,7 @@ public class WaterState {
 		Scanner in = new Scanner(System.in);
         System.out.print("Enter a temperature as any number followed by one letter unit in F, C, or K (ie: 123.4C): ");
         String temperature = in.nextLine();
-        System.out.print("Enter the current atmospheric pressure as any number directly followed the unit in Torr, Atm, or Pa (ie: 120000Pa); leave blank to assume 1atm: ");
+        System.out.print("Enter the current atmospheric pressure as any number directly followed the unit in Torr, Atm, Pa, or Mpa (ie: 120000Pa); leave blank to assume 1atm: ");
         String pressure = in.nextLine();
         in.close();
         System.out.print(getWaterState(temperature, pressure));
