@@ -1,7 +1,9 @@
 /**
  * CS 105 Theory & Practice I
  * CRN: 62499
- * Assignment: Integer Pairs
+ * Assignment: Water State
+ * 
+ * @description This program takes the temperature and pressure values for a hypothetical sample of H2O (water) and outputs the theoretical physical state it should be in with a 3% margin of error
  * 
  * The equations used for determining solid water state are derived from The International Association for the Properties of Water and Steam
  * Source: http://www.iapws.org/relguide/MeltSub2011.pdf
@@ -37,9 +39,9 @@ public class WaterState {
 			else rawTemperatureValue = Double.parseDouble(temperature.substring(0, temperature.length() - 1));
 			
 			double temperatureValueC = 0.0;
-			if(temperatureUnit == 'F') temperatureValueC = (rawTemperatureValue - 32.0) * (5.0/9.0);
-			else if(temperatureUnit == 'K') temperatureValueC = (rawTemperatureValue - 273.15);
-			else if(temperatureUnit == 'C') temperatureValueC = rawTemperatureValue;
+			if(temperatureUnit == 'F' || temperatureUnit == 'f') temperatureValueC = (rawTemperatureValue - 32.0) * (5.0/9.0);
+			else if(temperatureUnit == 'K' || temperatureUnit == 'k') temperatureValueC = (rawTemperatureValue - 273.15);
+			else if(temperatureUnit == 'C' || temperatureUnit == 'c') temperatureValueC = rawTemperatureValue;
 			else {
 				System.out.println("!Warning: Invalid or Unknown Temperature unit. Assuming Celcius... ");
 				temperatureValueC = Double.parseDouble(temperature);
