@@ -13,7 +13,7 @@
  * Statement of code ownership: I hereby state that I have written all of this
  * code and I have not copied this code from any other person or source.
  * 
- * @version a.1.0.0
+ * @version a.1.0.1
  * 
  * @author Mattys C vanZeyl
  */
@@ -159,8 +159,8 @@ public class WaterState {
 			}
 			
 			
-			System.out.println("meltingPressurePa: " + meltingPressurePa);
-			System.out.println("pressureValuePa: " + pressureValuePa);
+			//System.out.println("meltingPressurePa: " + meltingPressurePa);
+			//System.out.println("pressureValuePa: " + pressureValuePa);
 			
 			String returnString = "Water state: " + WaterState;
 			return returnString;
