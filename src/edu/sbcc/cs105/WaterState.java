@@ -13,7 +13,7 @@
  * Statement of code ownership: I hereby state that I have written all of this
  * code and I have not copied this code from any other person or source.
  * 
- * @version a.1.0.2
+ * @version a.1.1.0
  * 
  * @author Mattys C vanZeyl
  * @website https://www.tysseract.net
@@ -90,7 +90,7 @@ public class WaterState {
 			//do the calculations
 			if(temperatureValueC >= boilingPointC) WaterState = MatterState.GAS; //below the vapour curve
 			else if(pressureValuePa <= 208566000.0) { //everything below ice Ih - ice III - liquid triple point
-				//3.1 Melting pressure of ice Ih (temperature range from 273.16 K to 251.165 K)
+				System.out.println("!Info: using equation 3.1");//3.1 Melting pressure of ice Ih (temperature range from 273.16 K to 251.165 K)
 				if(temperatureValueK >= 273.16) WaterState = MatterState.LIQUID;
 				else if(temperatureValueK <= 251.165) WaterState = MatterState.SOLID;
 				else { //where the pressure-temperature curve exists between 273.16 K and 251.165 K
@@ -103,7 +103,7 @@ public class WaterState {
 				if(Math.abs(meltingPressurePa - pressureValuePa)/Math.min(meltingPressurePa, pressureValuePa) <= 0.02) System.out.println("!Caution: difference is within the 2% margin of error; results may not be experimentally accurate... ");
 			}
 			else if(pressureValuePa <= 350100000.0) { //everything else below ice III - ice V - liquid triple point
-				//3.2 Melting pressure of ice III (temperature range from 251.165 K to 256.164 K)
+				System.out.println("!Info: using equation 3.2");//3.2 Melting pressure of ice III (temperature range from 251.165 K to 256.164 K)
 				if(temperatureValueK >= 256.164) WaterState = MatterState.LIQUID;
 				else if(temperatureValueK <= 251.165) WaterState = MatterState.SOLID;
 				else { //where the pressure-temperature curve exists between  251.165 K and 256.164 K
@@ -116,7 +116,7 @@ public class WaterState {
 				if(Math.abs(meltingPressurePa - pressureValuePa)/Math.min(meltingPressurePa, pressureValuePa) <= 0.03) System.out.println("!Caution: difference is within the 3% margin of error; results may not be experimentally accurate... ");
 			}
 			else if(pressureValuePa <= 632400000.0) { //everything else below ice V - ice VI - liquid triple point
-				//3.3 Melting pressure of ice V (temperature range from 256.164 K to 273.31 K)
+				System.out.println("!Info: using equation 3.3");//3.3 Melting pressure of ice V (temperature range from 256.164 K to 273.31 K)
 				if(temperatureValueK >= 273.31) WaterState = MatterState.LIQUID;
 				else if(temperatureValueK <= 256.164) WaterState = MatterState.SOLID;
 				else { //where the pressure-temperature curve exists between  256.164 K and 273.31 K
@@ -129,7 +129,7 @@ public class WaterState {
 				if(Math.abs(meltingPressurePa - pressureValuePa)/Math.min(meltingPressurePa, pressureValuePa) <= 0.03) System.out.println("!Caution: difference is within the 3% margin of error; results may not be experimentally accurate... ");
 			}
 			else if(pressureValuePa <= 2216000000.0) { //everything else below ice VI - ice VII - liquid triple point
-				//3.4 Melting pressure of ice VI (temperature range from 273.31 K to 355 K)
+				System.out.println("!Info: using equation 3.4");//3.4 Melting pressure of ice VI (temperature range from 273.31 K to 355 K)
 				if(temperatureValueK >= 355) WaterState = MatterState.LIQUID;
 				else if(temperatureValueK <= 273.31) WaterState = MatterState.SOLID;
 				else { //where the pressure-temperature curve exists between  273.31 K and 355 K
@@ -143,12 +143,14 @@ public class WaterState {
 			}
 			else if(temperatureValueK <= 10000.0 && pressureValuePa <= 100000000000.0) { //everything else (accurate below 715K)
 				if(temperatureValueK > 715.0) System.out.println("!Warning: above 715 Kelvins, accuracy is not tested to within 3%... ");
-				//3.5 Melting pressure of ice VII (temperature range from 355 K to 715 K)
-				if(temperatureValueK >= 355) WaterState = MatterState.LIQUID;
-				else if(temperatureValueK <= 273.31) WaterState = MatterState.SOLID;
+				System.out.println("!Info: using equation 3.5");//3.5 Melting pressure of ice VII (temperature range from 355 K to 715 K)
+				if(temperatureValueK <= 355) WaterState = MatterState.LIQUID;
+				//not necessary: last equation, most accurate for above 715K
+				//else if(temperatureValueK >= 715.0) WaterState = MatterState.SOLID;
 				else { //where the pressure-temperature curve exists between 355 K and 715 K
 					double reducedTemperature = temperatureValueK / 273.31;
 					double reducedPressure = 1 - 1.07476 * (1 - Math.pow(reducedTemperature, 4.6));
+					System.out.println("reduced pressure: " + reducedPressure);
 					meltingPressurePa = reducedPressure * 2216000000.0;
 					if(pressureValuePa >= meltingPressurePa) WaterState = MatterState.SOLID;
 					else WaterState = MatterState.LIQUID;
@@ -159,9 +161,9 @@ public class WaterState {
 				System.out.println("!Error: temperature must be below 10000K and the pressure must be below 100GPa... ");
 			}
 			
-			
-			//System.out.println("meltingPressurePa: " + meltingPressurePa);
-			//System.out.println("pressureValuePa: " + pressureValuePa);
+			System.out.println("temperatureValueK: " + temperatureValueK);
+			System.out.println("meltingPressurePa: " + meltingPressurePa);
+			System.out.println("pressureValuePa: " + pressureValuePa);
 			
 			String returnString = "Water state: " + WaterState;
 			return returnString;
