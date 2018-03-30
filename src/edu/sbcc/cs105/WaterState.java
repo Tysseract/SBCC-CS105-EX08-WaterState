@@ -13,7 +13,7 @@
  * Statement of code ownership: I hereby state that I have written all of this
  * code and I have not copied this code from any other person or source.
  * 
- * @version a.1.1.0
+ * @version a.1.1.1
  * 
  * @author Mattys C vanZeyl
  * @website https://www.tysseract.net
@@ -150,7 +150,7 @@ public class WaterState {
 				else { //where the pressure-temperature curve exists between 355 K and 715 K
 					double reducedTemperature = temperatureValueK / 273.31;
 					double reducedPressure = 1 - 1.07476 * (1 - Math.pow(reducedTemperature, 4.6));
-					System.out.println("reduced pressure: " + reducedPressure);
+					//System.out.println("reduced pressure: " + reducedPressure);
 					meltingPressurePa = reducedPressure * 2216000000.0;
 					if(pressureValuePa >= meltingPressurePa) WaterState = MatterState.SOLID;
 					else WaterState = MatterState.LIQUID;
@@ -161,9 +161,9 @@ public class WaterState {
 				System.out.println("!Error: temperature must be below 10000K and the pressure must be below 100GPa... ");
 			}
 			
-			System.out.println("temperatureValueK: " + temperatureValueK);
-			System.out.println("meltingPressurePa: " + meltingPressurePa);
-			System.out.println("pressureValuePa: " + pressureValuePa);
+			//System.out.println("temperatureValueK: " + temperatureValueK);
+			//System.out.println("meltingPressurePa: " + meltingPressurePa);
+			//System.out.println("pressureValuePa: " + pressureValuePa);
 			
 			String returnString = "Water state: " + WaterState;
 			return returnString;
